@@ -1,0 +1,57 @@
+version: '3.4'
+
+networks:
+  odoo-17-net:
+
+volumes:
+  odoo-17-db-postgresql:
+  odoo-17-db-pgadmin4:
+  odoo-17-filestore:
+
+services:
+  app:
+    build: 
+      context: ../.
+      dockerfile: Dockerfile
+    volumes:
+      - odoo-17-filestore:/var/lib/odoo
+      - ../odoo:/opt/odoo
+      - ../extra-addons:/opt/extra-addons
+      # - ../enterprise:/opt/enterprise
+      - ../odoo.conf:/opt/odoo.conf
+      - ../.vscode:/opt/.vscode
+    networks:
+      - odoo-17-net
+    depends_on:
+      - db
+    ports:
+      - 8069:8069
+      - 8072:8072
+    tty: true
+    command: ["/bin/bash"]
+
+  db:
+    user: root
+    image: postgres:15
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+    volumes:
+      - odoo-17-db-postgresql:/var/lib/postgresql/data
+    networks:
+      - odoo-17-net
+  pgadmin-odoo-17:
+    user: root
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@odoo.com
+      PGADMIN_DEFAULT_PASSWORD: odoo@2023
+    ports:
+      - "8080:80"
+    networks:
+      - odoo-17-net
+    volumes:
+      - odoo-17-db-pgadmin4:/var/lib/pgadmin4/data
+    depends_on:
+      - db
