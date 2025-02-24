@@ -4742,4 +4742,1037 @@
               <xs:documentation>Specifies the image resolution in DPI (dots per inch).</xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element minOccurs="0" name="CopiesToPrint" type="xs:nonNegativeI
+          <xs:element minOccurs="0" name="CopiesToPrint" type="xs:nonNegativeInteger">
+            <xs:annotation>
+              <xs:documentation>Can be zero for documents whose disposition implies that no content is included.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Parts" type="ns:ShippingDocumentPart">
+            <xs:annotation>
+              <xs:documentation>One or more document parts which make up a single logical document, such as multiple pages of a single form.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ShippingDocumentDispositionDetail">
+        <xs:annotation>
+          <xs:documentation>Each occurrence of this class specifies a particular way in which a kind of shipping document is to be produced and provided.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DispositionType" type="ns:ShippingDocumentDispositionType">
+            <xs:annotation>
+              <xs:documentation>Values in this field specify how to create and return the document.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Grouping" type="ns:ShippingDocumentGroupingType">
+            <xs:annotation>
+              <xs:documentation>Specifies how to organize all documents of this type.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="StorageDetail" type="ns:ShippingDocumentStorageDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies how to store document images.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="EMailDetail" type="ns:ShippingDocumentEMailDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies how to e-mail document images.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="PrintDetail" type="ns:ShippingDocumentPrintDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies how a queued document is to be printed.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ShippingDocumentDispositionType">
+        <xs:annotation>
+          <xs:documentation>Specifies how to return a shipping document to the caller.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="DEFERRED_STORED" />
+          <xs:enumeration value="EMAILED" />
+          <xs:enumeration value="QUEUED" />
+          <xs:enumeration value="RETURNED" />
+          <xs:enumeration value="STORED" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="ShippingDocumentEMailDetail">
+        <xs:annotation>
+          <xs:documentation>Specifies how to e-mail shipping documents.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="EMailRecipients" type="ns:ShippingDocumentEMailRecipient">
+            <xs:annotation>
+              <xs:documentation>Provides the roles and email addresses for e-mail recipients.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Grouping" type="ns:ShippingDocumentEMailGroupingType">
+            <xs:annotation>
+              <xs:documentation>Identifies the convention by which documents are to be grouped as e-mail attachments.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Localization" type="ns:Localization">
+            <xs:annotation>
+              <xs:documentation>Specifies the language in which the email containing the document is requested to be composed.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ShippingDocumentEMailGroupingType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="BY_RECIPIENT" />
+          <xs:enumeration value="NONE" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="ShippingDocumentEMailRecipient">
+        <xs:annotation>
+          <xs:documentation>Specifies an individual recipient of e-mailed shipping document(s).</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RecipientType" type="ns:EMailNotificationRecipientType">
+            <xs:annotation>
+              <xs:documentation>Identifies the relationship of this recipient in the shipment.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Address" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Address to which the document is to be sent.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ShippingDocumentFormat">
+        <xs:annotation>
+          <xs:documentation>Specifies characteristics of a shipping document to be produced.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Dispositions" type="ns:ShippingDocumentDispositionDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies how to create, organize, and return the document.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="TopOfPageOffset" type="ns:LinearMeasure">
+            <xs:annotation>
+              <xs:documentation>Specifies how far down the page to move the beginning of the image; allows for printing on letterhead and other pre-printed stock.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ImageType" type="ns:ShippingDocumentImageType" />
+          <xs:element minOccurs="0" name="StockType" type="ns:ShippingDocumentStockType" />
+          <xs:element minOccurs="0" name="ProvideInstructions" type="xs:boolean">
+            <xs:annotation>
+              <xs:documentation>For those shipping document types which have both a "form" and "instructions" component (e.g. General Agency Agreement), this field indicates whether to provide the instructions.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="OptionsRequested" type="ns:DocumentFormatOptionsRequested" />
+          <xs:element minOccurs="0" name="Localization" type="ns:Localization">
+            <xs:annotation>
+              <xs:documentation>Governs the language to be used for this individual document, independently from other content returned for the same shipment.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="CustomDocumentIdentifier" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Identifies the individual document specified by the client.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ShippingDocumentGroupingType">
+        <xs:annotation>
+          <xs:documentation>Specifies how to organize all shipping documents of the same type.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CONSOLIDATED_BY_DOCUMENT_TYPE" />
+          <xs:enumeration value="INDIVIDUAL" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="ShippingDocumentImageType">
+        <xs:annotation>
+          <xs:documentation>Specifies the image format used for a shipping document.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="DOC" />
+          <xs:enumeration value="EPL2" />
+          <xs:enumeration value="PDF" />
+          <xs:enumeration value="PNG" />
+          <xs:enumeration value="RTF" />
+          <xs:enumeration value="TEXT" />
+          <xs:enumeration value="ZPLII" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="ShippingDocumentNamingType">
+        <xs:annotation>
+          <xs:documentation>Identifies the convention by which file names are constructed for STORED or DEFERRED documents.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="FAST" />
+          <xs:enumeration value="LEGACY_FXRS" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="ShippingDocumentPart">
+        <xs:annotation>
+          <xs:documentation>A single part of a shipping document, such as one page of a multiple-page document whose format requires a separate image per page.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DocumentPartSequenceNumber" type="xs:positiveInteger">
+            <xs:annotation>
+              <xs:documentation>The one-origin position of this part within a document.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Image" type="xs:base64Binary">
+            <xs:annotation>
+              <xs:documentation>Graphic or printer commands for this image within a document.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ShippingDocumentPrintDetail">
+        <xs:annotation>
+          <xs:documentation>Specifies printing options for a shipping document.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PrinterId" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Provides environment-specific printer identification.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ShippingDocumentSpecification">
+        <xs:annotation>
+          <xs:documentation>Contains all data required for additional (non-label) shipping documents to be produced in conjunction with a specific shipment.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="ShippingDocumentTypes" type="ns:RequestedShippingDocumentType">
+            <xs:annotation>
+              <xs:documentation>Indicates the types of shipping documents requested by the shipper.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="CertificateOfOrigin" type="ns:CertificateOfOriginDetail" />
+          <xs:element minOccurs="0" name="CommercialInvoiceDetail" type="ns:CommercialInvoiceDetail" />
+          <xs:element minOccurs="0" name="UsmcaCommercialInvoiceCertificationOfOriginDetail" type="ns:UsmcaCommercialInvoiceCertificationOfOriginDetail" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomPackageDocumentDetail" type="ns:CustomDocumentDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies the production of each package-level custom document (the same specification is used for all packages).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomShipmentDocumentDetail" type="ns:CustomDocumentDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies the production of a shipment-level custom document.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ExportDeclarationDetail" type="ns:ExportDeclarationDetail" />
+          <xs:element minOccurs="0" name="GeneralAgencyAgreementDetail" type="ns:GeneralAgencyAgreementDetail" />
+          <xs:element minOccurs="0" name="UsmcaCertificationOfOriginDetail" type="ns:UsmcaCertificationOfOriginDetail" />
+          <xs:element minOccurs="0" name="Op900Detail" type="ns:Op900Detail">
+            <xs:annotation>
+              <xs:documentation>Specifies the production of the OP-900 document for hazardous materials packages.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="DangerousGoodsShippersDeclarationDetail" type="ns:DangerousGoodsShippersDeclarationDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies the production of the 1421c document for dangerous goods shipment.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FreightAddressLabelDetail" type="ns:FreightAddressLabelDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies the production of the OP-900 document for hazardous materials.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FreightBillOfLadingDetail" type="ns:FreightBillOfLadingDetail" />
+          <xs:element minOccurs="0" name="ReturnInstructionsDetail" type="ns:ReturnInstructionsDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies the production of the return instructions document.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ShippingDocumentStockType">
+        <xs:annotation>
+          <xs:documentation>Specifies the type of paper (stock) on which a document will be printed.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="OP_900_LG_B" />
+          <xs:enumeration value="OP_900_LL_B" />
+          <xs:enumeration value="OP_950" />
+          <xs:enumeration value="PAPER_4X6" />
+          <xs:enumeration value="PAPER_4_PER_PAGE_PORTRAIT" />
+          <xs:enumeration value="PAPER_LETTER" />
+          <xs:enumeration value="STOCK_4X6" />
+          <xs:enumeration value="STOCK_4X6.75_LEADING_DOC_TAB" />
+          <xs:enumeration value="STOCK_4X6.75_TRAILING_DOC_TAB" />
+          <xs:enumeration value="STOCK_4X8" />
+          <xs:enumeration value="STOCK_4X9_LEADING_DOC_TAB" />
+          <xs:enumeration value="STOCK_4X9_TRAILING_DOC_TAB" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="ShippingDocumentStorageDetail">
+        <xs:annotation>
+          <xs:documentation>Specifies how to store shipping documents.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Type" type="ns:ShippingDocumentStorageDetailType">
+            <xs:annotation>
+              <xs:documentation>Indicates the mechanism by which a shipping document will be stored for later retrieval.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FilePath" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Provides the path to be used for STORED or DEFERRED documents.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FileNaming" type="ns:ShippingDocumentNamingType">
+            <xs:annotation>
+              <xs:documentation>Identifies the convention by which file names are constructed for STORED or DEFERRED documents.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FileSuffix" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Suffix to be placed at the end of the file name; required on some platforms to determine file type.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ShippingDocumentStorageDetailType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ASYNC_SERVICE" />
+          <xs:enumeration value="LOCAL_FILE_SYSTEM" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="SignatureOptionDetail">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="OptionType" type="ns:SignatureOptionType" />
+          <xs:element minOccurs="0" name="SignatureReleaseNumber" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="SignatureOptionType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ADULT" />
+          <xs:enumeration value="DIRECT" />
+          <xs:enumeration value="INDIRECT" />
+          <xs:enumeration value="NO_SIGNATURE_REQUIRED" />
+          <xs:enumeration value="SERVICE_DEFAULT" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="SmartPostAncillaryEndorsementType">
+        <xs:annotation>
+          <xs:documentation>These values are mutually exclusive; at most one of them can be attached to a SmartPost shipment.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ADDRESS_CORRECTION" />
+          <xs:enumeration value="CARRIER_LEAVE_IF_NO_RESPONSE" />
+          <xs:enumeration value="CHANGE_SERVICE" />
+          <xs:enumeration value="FORWARDING_SERVICE" />
+          <xs:enumeration value="RETURN_SERVICE" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="SmartPostIndiciaType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MEDIA_MAIL" />
+          <xs:enumeration value="PARCEL_RETURN" />
+          <xs:enumeration value="PARCEL_SELECT" />
+          <xs:enumeration value="PRESORTED_BOUND_PRINTED_MATTER" />
+          <xs:enumeration value="PRESORTED_STANDARD" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="SmartPostShipmentDetail">
+        <xs:annotation>
+          <xs:documentation>Data required for shipments handled under the SMART_POST and GROUND_SMART_POST service types.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ProcessingOptionsRequested" type="ns:SmartPostShipmentProcessingOptionsRequested" />
+          <xs:element minOccurs="0" name="Indicia" type="ns:SmartPostIndiciaType" />
+          <xs:element minOccurs="0" name="AncillaryEndorsement" type="ns:SmartPostAncillaryEndorsementType" />
+          <xs:element minOccurs="0" name="HubId" type="xs:string" />
+          <xs:element minOccurs="0" name="CustomerManifestId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="SmartPostShipmentProcessingOptionType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="GROUND_TRACKING_NUMBER_REQUESTED" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="SmartPostShipmentProcessingOptionsRequested">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Options" type="ns:SmartPostShipmentProcessingOptionType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="SpecialRatingAppliedType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="FEDEX_ONE_RATE" />
+          <xs:enumeration value="FIXED_FUEL_SURCHARGE" />
+          <xs:enumeration value="IMPORT_PRICING" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="SpecialServiceDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Identifier" type="ns:OfferingIdentifierDetail" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Names" type="ns:ProductName" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="StringBarcode">
+        <xs:annotation>
+          <xs:documentation>Each instance of this data type represents a barcode whose content must be represented as ASCII text (i.e. not binary data).</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Type" type="ns:StringBarcodeType">
+            <xs:annotation>
+              <xs:documentation>The kind of barcode data in this instance.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Value" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>The data content of this instance.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="StringBarcodeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ADDRESS" />
+          <xs:enumeration value="ASTRA" />
+          <xs:enumeration value="FEDEX_1D" />
+          <xs:enumeration value="GROUND" />
+          <xs:enumeration value="POSTAL" />
+          <xs:enumeration value="USPS" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="Surcharge">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SurchargeType" type="ns:SurchargeType" />
+          <xs:element minOccurs="0" name="Level" type="ns:SurchargeLevelType" />
+          <xs:element minOccurs="0" name="Description" type="xs:string" />
+          <xs:element minOccurs="1" name="Amount" type="ns:Money" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="SurchargeLevelType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PACKAGE" />
+          <xs:enumeration value="SHIPMENT" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="SurchargeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ACCOUNT_NUMBER_PROCESSING_FEE" />
+          <xs:enumeration value="ADDITIONAL_HANDLING" />
+          <xs:enumeration value="ADDRESS_CORRECTION" />
+          <xs:enumeration value="ANCILLARY_FEE" />
+          <xs:enumeration value="APPOINTMENT_DELIVERY" />
+          <xs:enumeration value="BROKER_SELECT_OPTION" />
+          <xs:enumeration value="CANADIAN_DESTINATION" />
+          <xs:enumeration value="COD" />
+          <xs:enumeration value="CUT_FLOWERS" />
+          <xs:enumeration value="DANGEROUS_GOODS" />
+          <xs:enumeration value="DELIVERY_AREA" />
+          <xs:enumeration value="DELIVERY_CONFIRMATION" />
+          <xs:enumeration value="DELIVERY_ON_INVOICE_ACCEPTANCE" />
+          <xs:enumeration value="DOCUMENTATION_FEE" />
+          <xs:enumeration value="DRY_ICE" />
+          <xs:enumeration value="EMAIL_LABEL" />
+          <xs:enumeration value="EUROPE_FIRST" />
+          <xs:enumeration value="EXCESS_VALUE" />
+          <xs:enumeration value="EXHIBITION" />
+          <xs:enumeration value="EXPORT" />
+          <xs:enumeration value="EXTRA_SURFACE_HANDLING_CHARGE" />
+          <xs:enumeration value="EXTREME_LENGTH" />
+          <xs:enumeration value="FEDEX_INTRACOUNTRY_FEES" />
+          <xs:enumeration value="FEDEX_TAG" />
+          <xs:enumeration value="FICE" />
+          <xs:enumeration value="FLATBED" />
+          <xs:enumeration value="FREIGHT_GUARANTEE" />
+          <xs:enumeration value="FREIGHT_ON_VALUE" />
+          <xs:enumeration value="FREIGHT_TO_COLLECT" />
+          <xs:enumeration value="FUEL" />
+          <xs:enumeration value="HIGH_COST_SERVICE_AREA_DESTINATION" />
+          <xs:enumeration value="HIGH_COST_SERVICE_AREA_ORIGIN" />
+          <xs:enumeration value="HOLD_AT_LOCATION" />
+          <xs:enumeration value="HOME_DELIVERY_APPOINTMENT" />
+          <xs:enumeration value="HOME_DELIVERY_DATE_CERTAIN" />
+          <xs:enumeration value="HOME_DELIVERY_EVENING" />
+          <xs:enumeration value="INSIDE_DELIVERY" />
+          <xs:enumeration value="INSIDE_PICKUP" />
+          <xs:enumeration value="INSURED_VALUE" />
+          <xs:enumeration value="INTERHAWAII" />
+          <xs:enumeration value="LIFTGATE_DELIVERY" />
+          <xs:enumeration value="LIFTGATE_PICKUP" />
+          <xs:enumeration value="LIMITED_ACCESS_DELIVERY" />
+          <xs:enumeration value="LIMITED_ACCESS_PICKUP" />
+          <xs:enumeration value="METRO_DELIVERY" />
+          <xs:enumeration value="METRO_PICKUP" />
+          <xs:enumeration value="NON_MACHINABLE" />
+          <xs:enumeration value="OFFSHORE" />
+          <xs:enumeration value="ON_CALL_PICKUP" />
+          <xs:enumeration value="ON_DEMAND_CARE" />
+          <xs:enumeration value="OTHER" />
+          <xs:enumeration value="OUT_OF_DELIVERY_AREA" />
+          <xs:enumeration value="OUT_OF_PICKUP_AREA" />
+          <xs:enumeration value="OVERSIZE" />
+          <xs:enumeration value="OVER_DIMENSION" />
+          <xs:enumeration value="OVER_LENGTH" />
+          <xs:enumeration value="PEAK" />
+          <xs:enumeration value="PEAK_ADDITIONAL_HANDLING" />
+          <xs:enumeration value="PEAK_OVERSIZE" />
+          <xs:enumeration value="PEAK_RESIDENTIAL_DELIVERY" />
+          <xs:enumeration value="PIECE_COUNT_VERIFICATION" />
+          <xs:enumeration value="PRE_DELIVERY_NOTIFICATION" />
+          <xs:enumeration value="PRIORITY_ALERT" />
+          <xs:enumeration value="PROTECTION_FROM_FREEZING" />
+          <xs:enumeration value="REGIONAL_MALL_DELIVERY" />
+          <xs:enumeration value="REGIONAL_MALL_PICKUP" />
+          <xs:enumeration value="REROUTE" />
+          <xs:enumeration value="RESCHEDULE" />
+          <xs:enumeration value="RESIDENTIAL_DELIVERY" />
+          <xs:enumeration value="RESIDENTIAL_PICKUP" />
+          <xs:enumeration value="RETURN_LABEL" />
+          <xs:enumeration value="SATURDAY_DELIVERY" />
+          <xs:enumeration value="SATURDAY_PICKUP" />
+          <xs:enumeration value="SIGNATURE_OPTION" />
+          <xs:enumeration value="TARP" />
+          <xs:enumeration value="THIRD_PARTY_CONSIGNEE" />
+          <xs:enumeration value="TRANSMART_SERVICE_FEE" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="Tax">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="TaxType" type="ns:TaxType" />
+          <xs:element minOccurs="0" name="Description" type="xs:string" />
+          <xs:element minOccurs="0" name="Amount" type="ns:Money" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="TaxType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="EXPORT" />
+          <xs:enumeration value="GST" />
+          <xs:enumeration value="HST" />
+          <xs:enumeration value="INTRACOUNTRY" />
+          <xs:enumeration value="OTHER" />
+          <xs:enumeration value="PST" />
+          <xs:enumeration value="VAT" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="TaxesOrMiscellaneousChargeType">
+        <xs:annotation>
+          <xs:documentation>Specifice the kind of tax or miscellaneous charge being reported on a Commercial Invoice.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="COMMISSIONS" />
+          <xs:enumeration value="DISCOUNTS" />
+          <xs:enumeration value="HANDLING_FEES" />
+          <xs:enumeration value="OTHER" />
+          <xs:enumeration value="ROYALTIES_AND_LICENSE_FEES" />
+          <xs:enumeration value="TAXES" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="TaxpayerIdentification">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="TinType" type="ns:TinType" />
+          <xs:element minOccurs="1" name="Number" type="xs:string" />
+          <xs:element minOccurs="0" name="Usage" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Identifies the usage of Tax Identification Number in Shipment processing</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="EffectiveDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ExpirationDate" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="TinType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="BUSINESS_NATIONAL" />
+          <xs:enumeration value="BUSINESS_STATE" />
+          <xs:enumeration value="BUSINESS_UNION" />
+          <xs:enumeration value="PERSONAL_NATIONAL" />
+          <xs:enumeration value="PERSONAL_STATE" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="TrackingId">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="TrackingIdType" type="ns:TrackingIdType" />
+          <xs:element minOccurs="0" name="FormId" type="xs:string" />
+          <xs:element minOccurs="0" name="UspsApplicationId" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>For use with SmartPost tracking IDs only</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="TrackingNumber" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="TrackingIdType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="EXPRESS" />
+          <xs:enumeration value="FEDEX" />
+          <xs:enumeration value="FREIGHT" />
+          <xs:enumeration value="GROUND" />
+          <xs:enumeration value="USPS" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="TransactionDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CustomerTransactionId" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Free form text to be echoed back in the reply. Used to match requests and replies.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Localization" type="ns:Localization">
+            <xs:annotation>
+              <xs:documentation>Governs data payload language/translations (contrasted with ClientDetail.localization, which governs Notification.localizedMessage language selection).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="TransitTimeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="EIGHTEEN_DAYS" />
+          <xs:enumeration value="EIGHT_DAYS" />
+          <xs:enumeration value="ELEVEN_DAYS" />
+          <xs:enumeration value="FIFTEEN_DAYS" />
+          <xs:enumeration value="FIVE_DAYS" />
+          <xs:enumeration value="FOURTEEN_DAYS" />
+          <xs:enumeration value="FOUR_DAYS" />
+          <xs:enumeration value="NINETEEN_DAYS" />
+          <xs:enumeration value="NINE_DAYS" />
+          <xs:enumeration value="ONE_DAY" />
+          <xs:enumeration value="SEVENTEEN_DAYS" />
+          <xs:enumeration value="SEVEN_DAYS" />
+          <xs:enumeration value="SIXTEEN_DAYS" />
+          <xs:enumeration value="SIX_DAYS" />
+          <xs:enumeration value="TEN_DAYS" />
+          <xs:enumeration value="THIRTEEN_DAYS" />
+          <xs:enumeration value="THREE_DAYS" />
+          <xs:enumeration value="TWELVE_DAYS" />
+          <xs:enumeration value="TWENTY_DAYS" />
+          <xs:enumeration value="TWO_DAYS" />
+          <xs:enumeration value="UNKNOWN" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="UploadDocumentIdProducer">
+        <xs:annotation>
+          <xs:documentation>Specifies the application that is responsible for managing the document id.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CUSTOMER" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="UploadDocumentProducerType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CUSTOMER" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="UploadDocumentReferenceDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="LineNumber" type="xs:nonNegativeInteger" />
+          <xs:element minOccurs="0" name="CustomerReference" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Description of the uploaded document.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="DocumentProducer" type="ns:UploadDocumentProducerType" />
+          <xs:element minOccurs="0" name="DocumentType" type="ns:UploadDocumentType" />
+          <xs:element minOccurs="0" name="DocumentId" type="xs:string" />
+          <xs:element minOccurs="0" name="DocumentIdProducer" type="ns:UploadDocumentIdProducer" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="UploadDocumentType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CERTIFICATE_OF_ORIGIN" />
+          <xs:enumeration value="COMMERCIAL_INVOICE" />
+          <xs:enumeration value="ETD_LABEL" />
+          <xs:enumeration value="NET_RATE_SHEET" />
+          <xs:enumeration value="OTHER" />
+          <xs:enumeration value="PRO_FORMA_INVOICE" />
+          <xs:enumeration value="USMCA_CERTIFICATION_OF_ORIGIN" />
+          <xs:enumeration value="USMCA_COMMERCIAL_INVOICE_CERTIFICATION_OF_ORIGIN" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="UsmcaCertificationOfOriginDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Format" type="ns:ShippingDocumentFormat" />
+          <xs:element minOccurs="0" name="BlanketPeriod" type="ns:DateRange" />
+          <xs:element minOccurs="0" name="CertifierSpecification" type="ns:UsmcaCertifierSpecificationType" />
+          <xs:element minOccurs="0" name="ImporterSpecification" type="ns:UsmcaImporterSpecificationType" />
+          <xs:element minOccurs="0" name="ProducerSpecification" type="ns:UsmcaProducerSpecificationType" />
+          <xs:element minOccurs="0" name="Producer" type="ns:Party" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomerImageUsages" type="ns:CustomerImageUsage" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="UsmcaCertifierSpecificationType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="EXPORTER" />
+          <xs:enumeration value="IMPORTER" />
+          <xs:enumeration value="PRODUCER" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="UsmcaCommercialInvoiceCertificationOfOriginDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Format" type="ns:ShippingDocumentFormat" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomerImageUsages" type="ns:CustomerImageUsage" />
+          <xs:element minOccurs="0" name="FormVersion" type="xs:string" />
+          <xs:element minOccurs="0" name="CertifierSpecification" type="ns:UsmcaCertifierSpecificationType" />
+          <xs:element minOccurs="0" name="ProducerSpecification" type="ns:UsmcaProducerSpecificationType" />
+          <xs:element minOccurs="0" name="Producer" type="ns:Party" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="UsmcaCommodityDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="OriginCriterion" type="ns:UsmcaOriginCriterionCode" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="UsmcaImporterSpecificationType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="UNKNOWN" />
+          <xs:enumeration value="VARIOUS" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="UsmcaOriginCriterionCode">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="A" />
+          <xs:enumeration value="B" />
+          <xs:enumeration value="C" />
+          <xs:enumeration value="D" />
+          <xs:enumeration value="E" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="UsmcaProducerSpecificationType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AVAILABLE_UPON_REQUEST" />
+          <xs:enumeration value="SAME_AS_EXPORTER" />
+          <xs:enumeration value="VARIOUS" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="ValidateShipmentRequest">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="WebAuthenticationDetail" type="ns:WebAuthenticationDetail">
+            <xs:annotation>
+              <xs:documentation>Descriptive data to be used in authentication of the sender's identity (and right to use FedEx web services).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="1" name="ClientDetail" type="ns:ClientDetail" />
+          <xs:element minOccurs="0" name="TransactionDetail" type="ns:TransactionDetail" />
+          <xs:element minOccurs="1" name="Version" type="ns:VersionId" />
+          <xs:element minOccurs="1" name="RequestedShipment" type="ns:RequestedShipment" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ValidatedHazardousCommodityContent">
+        <xs:annotation>
+          <xs:documentation>Documents the kind and quantity of an individual hazardous commodity in a package.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" type="ns:ValidatedHazardousCommodityDescription">
+            <xs:annotation>
+              <xs:documentation>Identifies and describes an individual hazardous commodity.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Quantity" type="ns:HazardousCommodityQuantityDetail">
+            <xs:annotation>
+              <xs:documentation>Specifies the amount of the commodity in alternate units.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="MassPoints" type="xs:decimal">
+            <xs:annotation>
+              <xs:documentation>The mass points are a calculation used by ADR regulations for measuring the risk of a particular hazardous commodity.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Options" type="ns:HazardousCommodityOptionDetail">
+            <xs:annotation>
+              <xs:documentation>Customer-provided specifications for handling individual commodities.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="NetExplosiveDetail" type="ns:NetExplosiveDetail">
+            <xs:annotation>
+              <xs:documentation>The total mass of the contained explosive substances, without the mass of any casings, bullets, shells, etc.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ValidatedHazardousCommodityDescription">
+        <xs:annotation>
+          <xs:documentation>Identifies and describes an individual hazardous commodity. For 201001 load, this is based on data from the FedEx Ground Hazardous Materials Shipping Guide.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Id" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Regulatory identifier for a commodity (e.g. "UN ID" value).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:nonNegativeInteger">
+            <xs:annotation>
+              <xs:documentation>In conjunction with the regulatory identifier, this field uniquely identifies a specific hazardous materials commodity.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="PackingGroup" type="ns:HazardousCommodityPackingGroupType" />
+          <xs:element minOccurs="0" name="PackingInstructions" type="xs:string" />
+          <xs:element minOccurs="0" name="ProperShippingName" type="xs:string" />
+          <xs:element minOccurs="0" name="ProperShippingNameAndDescription" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Fully-expanded descriptive text for a hazardous commodity.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="TechnicalName" type="xs:string" />
+          <xs:element minOccurs="0" name="HazardClass" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="SubsidiaryClasses" type="xs:string" />
+          <xs:element minOccurs="0" name="Symbols" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Coded indications for special requirements or constraints.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="TunnelRestrictionCode" type="xs:string" />
+          <xs:element minOccurs="0" name="SpecialProvisions" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Attributes" type="ns:HazardousCommodityAttributeType" />
+          <xs:element minOccurs="0" name="Authorization" type="xs:string" />
+          <xs:element minOccurs="0" name="LabelText" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ValidatedHazardousContainer">
+        <xs:annotation>
+          <xs:documentation>Specifies the concept of a container used to package dangerous goods commodities.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="QValue" type="xs:decimal">
+            <xs:annotation>
+              <xs:documentation>Indicates that the quantity of the dangerous goods packaged is permissible for shipping. This is used to ensure that the dangerous goods commodities do not exceed the net quantity per package restrictions.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="HazardousCommodities" type="ns:ValidatedHazardousCommodityContent">
+            <xs:annotation>
+              <xs:documentation>Documents the kinds and quantities of all hazardous commodities in the current package.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="VariableHandlingChargeDetail">
+        <xs:annotation>
+          <xs:documentation>This definition of variable handling charge detail is intended for use in Jan 2011 corp load.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FixedValue" type="ns:Money" />
+          <xs:element minOccurs="0" name="PercentValue" type="xs:decimal">
+            <xs:annotation>
+              <xs:documentation>Actual percentage (10 means 10%, which is a mutiplier of 0.1)</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="RateElementBasis" type="ns:RateElementBasisType">
+            <xs:annotation>
+              <xs:documentation>Select the value from a set of rate data to which the percentage is applied.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="RateTypeBasis" type="ns:RateTypeBasisType">
+            <xs:annotation>
+              <xs:documentation>Select the type of rate from which the element is to be selected.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="VariableHandlingCharges">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="VariableHandlingCharge" type="ns:Money" />
+          <xs:element minOccurs="0" name="FixedVariableHandlingCharge" type="ns:Money" />
+          <xs:element minOccurs="0" name="PercentVariableHandlingCharge" type="ns:Money" />
+          <xs:element minOccurs="0" name="TotalCustomerCharge" type="ns:Money" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Volume">
+        <xs:annotation>
+          <xs:documentation>Three-dimensional volume/cubic measurement.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Units" type="ns:VolumeUnits" />
+          <xs:element minOccurs="0" name="Value" type="xs:decimal" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="VolumeUnits">
+        <xs:annotation>
+          <xs:documentation>Units of three-dimensional volume/cubic measure.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CUBIC_FT" />
+          <xs:enumeration value="CUBIC_M" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="Weight">
+        <xs:annotation>
+          <xs:documentation>The descriptive data for the heaviness of an object.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Units" type="ns:WeightUnits">
+            <xs:annotation>
+              <xs:documentation>Identifies the unit of measure associated with a weight value.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="1" name="Value" type="xs:decimal">
+            <xs:annotation>
+              <xs:documentation>Identifies the weight value of a package/shipment.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="WeightUnits">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="KG" />
+          <xs:enumeration value="LB" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="WebAuthenticationDetail">
+        <xs:annotation>
+          <xs:documentation>Used in authentication of the sender's identity.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ParentCredential" type="ns:WebAuthenticationCredential">
+            <xs:annotation>
+              <xs:documentation>This was renamed from cspCredential.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="1" name="UserCredential" type="ns:WebAuthenticationCredential">
+            <xs:annotation>
+              <xs:documentation>Credential used to authenticate a specific software application. This value is provided by FedEx after registration.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="WebAuthenticationCredential">
+        <xs:annotation>
+          <xs:documentation>Two part authentication string used for the sender's identity</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Key" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Identifying part of authentication credential. This value is provided by FedEx after registration</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="1" name="Password" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Secret part of authentication key. This value is provided by FedEx after registration.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="VersionId">
+        <xs:annotation>
+          <xs:documentation>Identifies the version/level of a service operation expected by a caller (in each request) and performed by the callee (in each reply).</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" fixed="ship" name="ServiceId" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>Identifies a system or sub-system which performs an operation.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="1" fixed="28" name="Major" type="xs:int">
+            <xs:annotation>
+              <xs:documentation>Identifies the service business level.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="1" fixed="0" name="Intermediate" type="xs:int">
+            <xs:annotation>
+              <xs:documentation>Identifies the service interface level.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="1" fixed="0" name="Minor" type="xs:int">
+            <xs:annotation>
+              <xs:documentation>Identifies the service code level.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="ProcessShipmentReply">
+    <part name="ProcessShipmentReply" element="ns:ProcessShipmentReply" />
+  </message>
+  <message name="ProcessTagRequest">
+    <part name="ProcessTagRequest" element="ns:ProcessTagRequest" />
+  </message>
+  <message name="ProcessShipmentRequest">
+    <part name="ProcessShipmentRequest" element="ns:ProcessShipmentRequest" />
+  </message>
+  <message name="DeleteTagRequest">
+    <part name="DeleteTagRequest" element="ns:DeleteTagRequest" />
+  </message>
+  <message name="ShipmentReply">
+    <part name="ShipmentReply" element="ns:ShipmentReply" />
+  </message>
+  <message name="DeleteShipmentRequest">
+    <part name="DeleteShipmentRequest" element="ns:DeleteShipmentRequest" />
+  </message>
+  <message name="ProcessTagReply">
+    <part name="ProcessTagReply" element="ns:ProcessTagReply" />
+  </message>
+  <message name="ValidateShipmentRequest">
+    <part name="ValidateShipmentRequest" element="ns:ValidateShipmentRequest" />
+  </message>
+  <portType name="ShipPortType">
+    <operation name="processTag" parameterOrder="ProcessTagRequest">
+      <input message="ns:ProcessTagRequest" />
+      <output message="ns:ProcessTagReply" />
+    </operation>
+    <operation name="processShipment" parameterOrder="ProcessShipmentRequest">
+      <input message="ns:ProcessShipmentRequest" />
+      <output message="ns:ProcessShipmentReply" />
+    </operation>
+    <operation name="deleteTag" parameterOrder="DeleteTagRequest">
+      <input message="ns:DeleteTagRequest" />
+      <output message="ns:ShipmentReply" />
+    </operation>
+    <operation name="deleteShipment" parameterOrder="DeleteShipmentRequest">
+      <input message="ns:DeleteShipmentRequest" />
+      <output message="ns:ShipmentReply" />
+    </operation>
+    <operation name="validateShipment" parameterOrder="ValidateShipmentRequest">
+      <input message="ns:ValidateShipmentRequest" />
+      <output message="ns:ShipmentReply" />
+    </operation>
+  </portType>
+  <binding name="ShipServiceSoapBinding" type="ns:ShipPortType">
+    <s1:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="processTag">
+      <s1:operation soapAction="http://fedex.com/ws/ship/v28/processTag" style="document" />
+      <input>
+        <s1:body use="literal" />
+      </input>
+      <output>
+        <s1:body use="literal" />
+      </output>
+    </operation>
+    <operation name="processShipment">
+      <s1:operation soapAction="http://fedex.com/ws/ship/v28/processShipment" style="document" />
+      <input>
+        <s1:body use="literal" />
+      </input>
+      <output>
+        <s1:body use="literal" />
+      </output>
+    </operation>
+    <operation name="deleteTag">
+      <s1:operation soapAction="http://fedex.com/ws/ship/v28/deleteTag" style="document" />
+      <input>
+        <s1:body use="literal" />
+      </input>
+      <output>
+        <s1:body use="literal" />
+      </output>
+    </operation>
+    <operation name="deleteShipment">
+      <s1:operation soapAction="http://fedex.com/ws/ship/v28/deleteShipment" style="document" />
+      <input>
+        <s1:body use="literal" />
+      </input>
+      <output>
+        <s1:body use="literal" />
+      </output>
+    </operation>
+    <operation name="validateShipment">
+      <s1:operation soapAction="http://fedex.com/ws/ship/v28/validateShipment" style="document" />
+      <input>
+        <s1:body use="literal" />
+      </input>
+      <output>
+        <s1:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="ShipService">
+    <port name="ShipServicePort" binding="ns:ShipServiceSoapBinding">
+      <s1:address location="https://ws.fedex.com:443/web-services/ship" />
+    </port>
+  </service>
+</definitions>
