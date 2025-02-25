@@ -18,8 +18,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Copiar addons adicionais
 COPY ./extra-addons /usr/lib/python3/dist-packages/odoo/extra-addons
-
+COPY ./enterprise /usr/lib/python3/dist-packages/odoo/enterprise
 # Definir o diretório de trabalho
+
 WORKDIR /usr/lib/python3/dist-packages/odoo
 
 COPY ./requirements.txt /usr/lib/python3/dist-packages/odoo/requirements.txt
@@ -48,7 +49,7 @@ RUN mkdir -p /var/lib/odoo/sessions \
 # Ajustar permissões para todo o diretório de dados do Odoo
 RUN chmod -R 777 /var/lib/odoo \
     && chown -R odoo:odoo /var/lib/odoo
-    
+
 USER odoo
 
 CMD ["odoo"]
