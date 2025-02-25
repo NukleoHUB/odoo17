@@ -24,5 +24,5 @@ jobs:
 
       - name: Build Docker Image Odoo 17
         run: |
-          docker buildx build --platform linux/amd64 -t aosdevs/odoocast:odoo.debian.16.0.${{ steps.timestamp.outputs.timestamp }} .
+          docker buildx build --platform linux/amd64 -t nukleoforce/odoo:odoo.debian.16.0.${{ steps.timestamp.outputs.timestamp }} .
           docker push nukleoforce/odoo:odoo.debian.17.0.${{ steps.timestamp.outputs.timestamp }}
