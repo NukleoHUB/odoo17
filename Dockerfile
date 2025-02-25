@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copiar addons adicionais
 COPY ./extra-addons /usr/lib/python3/dist-packages/odoo/extra-addons
 COPY ./enterprise /usr/lib/python3/dist-packages/odoo/enterprise
+COPY ./design-themes /usr/lib/python3/dist-packages/odoo/design-themes
 # Definir o diretório de trabalho
 
 WORKDIR /usr/lib/python3/dist-packages/odoo
