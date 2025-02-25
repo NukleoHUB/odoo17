@@ -37,6 +37,9 @@ COPY ./odoo.conf /etc/odoo/
 # Definir permissões adequadas
 RUN chown -R odoo:odoo /usr/lib/python3/dist-packages/odoo/extra-addons /etc/odoo/
 
+# Concede permissões totais às pastas necessárias
+RUN chmod -R 777 /var/lib/odoo /usr/lib/python3/dist-packages/odoo
+
 USER odoo
 
 CMD ["odoo"]
