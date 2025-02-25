@@ -103,7 +103,7 @@ RUN chown -R odoo:odoo /etc/odoo/odoo.conf \
     && chown -R odoo /mnt/enterprise
 
 # Copy entrypoint script and Odoo configuration file
-COPY ./entrypoint.sh /
+COPY entrypoint.sh /
 COPY odoo.conf /etc/odoo/
 COPY ./extra-addons /mnt/extra-addons
 COPY ./enterprise /mnt/enterprise
@@ -125,10 +125,11 @@ EXPOSE 8069 8071 8072
 # Set the default config file
 ENV ODOO_RC /etc/odoo/odoo.conf
 
-#COPY ./wait-for-psql.py /usr/local/bin/wait-for-psql.py
+COPY wait-for-psql.py /usr/local/bin/wait-for-psql.py
+RUN chmod +x /usr/local/bin/wait-for-psql.py
 
 # Set default user when running the container
-USER root
+USER odoo
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["odoo"]
