@@ -1,134 +1,42 @@
-FROM ubuntu:jammy
-
-SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
-
-# Generate locale C.UTF-8 for postgres and general locale data
-ENV LANG en_US.UTF-8
-
-# Retrieve the target architecture to install the correct wkhtmltopdf package
-ARG TARGETARCH
-
-# Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
+FROM odoo:17
 
 USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libffi-dev \
+    libxmlsec1-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    libxml2 \
+    libxmlsec1 \
+    python3-dev \
+    pkg-config \
+    libsasl2-dev \
+    libldap2-dev \
+    libssl-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
-        curl \
-        dirmngr \
-        fonts-noto-cjk \
-        gnupg \
-        libssl-dev \
-        node-less \
-        npm \
-        python3-magic \
-        python3-num2words \
-        python3-odf \
-        python3-pdfminer \
-        python3-pip \
-        python3-phonenumbers \
-        python3-pyldap \
-        python3-qrcode \
-        python3-renderpm \
-        python3-setuptools \
-        python3-slugify \
-        python3-vobject \
-        python3-watchdog \
-        python3-xlrd \
-        python3-xlwt \
-        gcc \
-        g++ \
-        libffi-dev \
-        libxmlsec1-dev \
-        libxml2-dev \
-        libxslt1-dev \
-        libxml2 \
-        libxmlsec1 \
-        python3-dev \
-        python3-cryptography \
-        python3-wheel \
-        pkg-config \
-        build-essential \
-        libsasl2-dev \
-        libldap2-dev \
-        xz-utils && \
-    if [ -z "${TARGETARCH}" ]; then \
-        TARGETARCH="$(dpkg --print-architecture)"; \
-    fi; \
-    WKHTMLTOPDF_ARCH=${TARGETARCH} && \
-    case ${TARGETARCH} in \
-    "amd64") WKHTMLTOPDF_ARCH=amd64 && WKHTMLTOPDF_SHA=967390a759707337b46d1c02452e2bb6b2dc6d59  ;; \
-    "arm64")  WKHTMLTOPDF_SHA=90f6e69896d51ef77339d3f3a20f8582bdf496cc  ;; \
-    "ppc64le" | "ppc64el") WKHTMLTOPDF_ARCH=ppc64el && WKHTMLTOPDF_SHA=5312d7d34a25b321282929df82e3574319aed25c  ;; \
-    esac \
-    && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_${WKHTMLTOPDF_ARCH}.deb \
-    && echo ${WKHTMLTOPDF_SHA} wkhtmltox.deb | sha1sum -c - \
-    && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
-    && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
+# Copiar addons adicionais
+COPY ./extra-addons /usr/lib/python3/dist-packages/odoo/extra-addons
 
-# install latest postgresql-client
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ jammy-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
-    && GNUPGHOME="$(mktemp -d)" \
-    && export GNUPGHOME \
-    && repokey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8' \
-    && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${repokey}" \
-    && gpg --batch --armor --export "${repokey}" > /etc/apt/trusted.gpg.d/pgdg.gpg.asc \
-    && gpgconf --kill all \
-    && rm -rf "$GNUPGHOME" \
-    && apt-get update  \
-    && apt-get install --no-install-recommends -y postgresql-client \
-    && rm -f /etc/apt/sources.list.d/pgdg.list \
-    && rm -rf /var/lib/apt/lists/*
+# Definir o diretório de trabalho
+WORKDIR /usr/lib/python3/dist-packages/odoo
 
-# Install rtlcss (on Debian buster)
-RUN npm install -g rtlcss
+COPY ./requirements.txt /usr/lib/python3/dist-packages/odoo/requirements.txt
 
-# Install Odoo
-ENV ODOO_VERSION 17.0
-ARG ODOO_RELEASE=20240209
-ARG ODOO_SHA=31a181b2ed0bcd303a955ea3716e59b2c3d2c20f
-RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
-    && echo "${ODOO_SHA} odoo.deb" | sha1sum -c - \
-    && apt-get update \
-    && apt-get -y install --no-install-recommends ./odoo.deb \
-    && rm -rf /var/lib/apt/lists/* odoo.deb
+# Verificar se o arquivo requirements.txt está presente
+RUN ls -l /usr/lib/python3/dist-packages/odoo/requirements.txt
 
-# Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
-RUN chown -R odoo:odoo /etc/odoo/odoo.conf \
-    && mkdir -p /mnt/extra-addons \
-    && mkdir -p /mnt/enterprise \
-    && chown -R odoo /mnt/extra-addons \
-    && chown -R odoo /mnt/enterprise
+# Atualizar o pip e instalar as dependências
+RUN pip3 install --upgrade pip \
+    && pip3 install --no-cache-dir -r /usr/lib/python3/dist-packages/odoo/requirements.txt
 
-# Copy entrypoint script and Odoo configuration file
-COPY ./entrypoint.sh /
-COPY odoo.conf /etc/odoo/
-COPY ./extra-addons /mnt/extra-addons
-COPY ./enterprise /mnt/enterprise
+# Copiar o arquivo de configuração do Odoo
+COPY ./odoo.conf /etc/odoo/
 
+# Definir permissões adequadas
+RUN chown -R odoo:odoo /usr/lib/python3/dist-packages/odoo/extra-addons /etc/odoo/
 
-WORKDIR /mnt/extra-addons
-RUN pip3 install -r ./requirements.txt
+USER odoo
 
-RUN pip3 install pandas==1.5.3 numpy==1.21.6
-
-
-RUN ln -s /opt/odoo/odoo-bin /usr/bin/odoo-server
-
-VOLUME ["/var/lib/odoo", "/mnt/extra-addons", "/mnt/enterprise"]
-
-# Expose Odoo services
-EXPOSE 8069 8071 8072
-
-# Set the default config file
-ENV ODOO_RC /etc/odoo/odoo.conf
-
-COPY wait-for-psql.py /usr/local/bin/wait-for-psql.py
-
-# Set default user when running the container
-USER root
-
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["odoo"]
