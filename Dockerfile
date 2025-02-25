@@ -40,6 +40,15 @@ RUN chown -R odoo:odoo /usr/lib/python3/dist-packages/odoo/extra-addons /etc/odo
 # Concede permissões totais às pastas necessárias
 RUN chmod -R 777 /var/lib/odoo /usr/lib/python3/dist-packages/odoo
 
+# Garantir que o diretório de sessões exista e tenha permissões corretas
+RUN mkdir -p /var/lib/odoo/sessions \
+    && chmod -R 777 /var/lib/odoo/sessions \
+    && chown -R odoo:odoo /var/lib/odoo/sessions
+
+# Ajustar permissões para todo o diretório de dados do Odoo
+RUN chmod -R 777 /var/lib/odoo \
+    && chown -R odoo:odoo /var/lib/odoo
+    
 USER odoo
 
 CMD ["odoo"]
