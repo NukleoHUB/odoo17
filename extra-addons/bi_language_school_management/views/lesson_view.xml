@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="language_lesson_tree_view" model="ir.ui.view">
+            <field name="name">language.lesson.tree.view</field>
+            <field name="model">language.lesson</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="language_lesson_form_view" model="ir.ui.view">
+            <field name="name">language.lesson.form.view</field>
+            <field name="model">language.lesson</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="button_start" string="Start" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="button_complete" string="Complete" type="object" class="btn-primary" invisible="state != 'started'"/>
+                        <button name="button_cancel" string="Cancel" type="object" invisible="state not in ('draft','started')"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1 class="d-flex">
+                                <field name="name" placeholder="Lesson Name" required="1" readonly="state != 'draft'"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="start_time" string="Period"/>
+                                <div class="o_row">
+                                    <field name="start_time" required="1" placeholder="Start Time" widget="daterange" options="{'related_end_date': 'end_time'}" readonly="state != 'draft'"/>
+                                    -
+                                    <field name="end_time" required="1" placeholder="End Time" widget="daterange" options="{'related_start_date': 'start_time'}" readonly="state != 'draft'"/>
+                                </div>
+                                <field name="employee_id" required="1" readonly="state != 'draft'"/>
+                                <field name="student_ids" widget="many2many_tags" required="1" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="product_id" domain="[('type','=','service')]" readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <field name="student_attendance_ids" nolabel="1" readonly="state != 'draft'">
+                            <tree editable="bottom" create="0" edit="0">
+                                <field name="student_id" required="1"/>
+                                <field name="attendance" required="1"/>
+                                <button name="mark_present" string="Mark Present" type="object" icon="fa-check" style="color:green" invisible="attendance == 'present'"/>
+                                <button name="mark_absent" string="Mark Absent" type="object" icon="fa-close" style="color:red" invisible="attendance == 'absent'"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="language_lesson_calendar_view" model="ir.ui.view">
+            <field name="name">language.lesson.calendar.view</field>
+            <field name="model">language.lesson</field>
+            <field name="arch" type="xml">
+<!--                <calendar string="Lessons" date_start="start_time" date_stop="end_time" color="employee_id" mode="month" quick_add="False">-->
+<!--                    <field name="employee_id" filters="1"/>-->
+<!--                    <field name="name" filters="1"/>-->
+<!--                    <field name="start_time"/>-->
+<!--                    <field name="end_time"/>-->
+<!--                    <field name="state" filters="1" invisible="1"/>-->
+<!--                </calendar>-->
+                <calendar date_start="start_time" date_stop="end_time" color="employee_id" mode="month">
+                    <field name="employee_id" filters="1"/>
+                    <field name="name" filters="1"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="state" filters="1" invisible="1"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="language_lesson_search_view" model="ir.ui.view">
+            <field name="name">language.lesson.search.view</field>
+            <field name="model">language.lesson</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="product_id"/>
+                    <field name="state"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_employee_id" string="Teacher" context="{'group_by':'employee_id'}"/>
+                        <filter name="group_by_product_id" string="Service" context="{'group_by':'product_id'}"/>
+                        <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="language_lesson_action" model="ir.actions.act_window">
+            <field name="name">Lessons</field>
+            <field name="res_model">language.lesson</field>
+            <field name="view_mode">tree,form,calendar,search</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Lessons not found to display.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_lesson" name="Lessons" sequence="6" action="language_lesson_action" parent="bi_language_school_management.menu_language_school"/>
+
+    </data>
+</odoo>

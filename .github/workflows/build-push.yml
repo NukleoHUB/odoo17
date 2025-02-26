@@ -1,0 +1,24 @@
+name: Build new images & Push to registry
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build new Odoo Image V17 Enterprise && Push to Registry
+        run: |
+          docker buildx build --platform linux/amd64 -t aosdevs/odoocast:odoo.debian.17.0.0.0.0 .
+          docker push aosdevs/odoocast:odoo.debian.17.0.0.0.0
+

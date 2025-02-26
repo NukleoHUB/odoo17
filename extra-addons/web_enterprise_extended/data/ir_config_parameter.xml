@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="can_connect_external_odoo_api" model="ir.config_parameter">
+            <field name="key">web_enterprise_extended.can_connect_external_odoo_api</field>
+            <field name="value">False</field>
+        </record>
+    
+    </data>
+    
+
+</odoo>

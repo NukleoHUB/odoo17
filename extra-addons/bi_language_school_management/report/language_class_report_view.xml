@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="language_class_report_form_view" model="ir.ui.view">
+        <field name="name">language.class.report.form.view</field>
+        <field name="model">language.class.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="start_date" widget="daterange" options="{'related_end_date': 'end_date'}" required="1"/>
+                    </group>
+                    <group>
+                        <field name="end_date" widget="daterange" options="{'related_start_date': 'start_date'}" required="1"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="lesson_type" required="1" string="Classes Type"/>
+                    <field name="language_class_ids"/>
+                    <field name="is_attendance"/>
+                </group>
+                <footer>
+                    <button name="print_pdf" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

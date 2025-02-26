@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_reporting" name="Reports" parent="bi_language_school_management.menu_language_school" sequence="7"/>
+
+        <record id="action_language_class_report" model="ir.actions.act_window">
+            <field name="name">Language Class Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">language.class.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_language_class_report" name="Language Class Report" action="action_language_class_report" parent="menu_reporting" sequence="1"/>
+    </data>
+</odoo>
