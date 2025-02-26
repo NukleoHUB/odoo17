@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_language_student,language.student,model_language_student,,1,1,1,1
+access_language_lesson,language.lesson,model_language_lesson,,1,1,1,1
+access_lesson_student_attendance,lesson.student.attendance,model_lesson_student_attendance,,1,1,1,1
+access_language_class,language.class,model_language_class,,1,1,1,1
+access_class_monthly_dates,class.monthly.dates,model_class_monthly_dates,,1,1,1,1
+access_add_lesson_wizard,add.lesson.wizard,model_add_lesson_wizard,,1,1,1,1
+access_language_class_report,language.class.report,model_language_class_report,,1,1,1,1

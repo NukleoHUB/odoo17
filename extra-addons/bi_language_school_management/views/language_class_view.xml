@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="language_class_tree_view" model="ir.ui.view">
+            <field name="name">language.class.tree.view</field>
+            <field name="model">language.class</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="employee_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="language_class_form_view" model="ir.ui.view">
+            <field name="name">language.class.form.view</field>
+            <field name="model">language.class</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="button_add_lesson" string="Add Lessons" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="button_start" string="Start" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="button_complete" string="Complete" type="object" class="btn-primary" invisible="state != 'started'"/>
+                        <button name="create_invoice" string="Create Invoice" type="object" class="btn-primary"
+                                invisible="state in ('draft','cancelled') or (invoice_created)"/>
+<!---->
+                        <button name="button_cancel" string="Cancel" type="object" invisible="state not in ('draft','started')"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="action_view_invoices" type="object" icon="fa-money"  invisible="invoice_count == 0">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1 class="d-flex">
+                                <field name="name" placeholder="Class Name" required="1" readonly="state != 'draft'"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="start_time" string="Period"/>
+                                <div class="o_row">
+                                    <field name="start_time" widget="daterange" options="{'related_end_date': 'end_time'}" required="1" placeholder="Start Time" readonly="state != 'draft'"/>
+                                    -
+                                    <field name="end_time" required="1" placeholder="End Time" widget="daterange" options="{'related_start_date': 'start_time'}" readonly="state != 'draft'"/>
+                                </div>
+                                <field name="employee_id" required="1" readonly="state != 'draft'"/>
+                                <field name="student_ids" widget="many2many_tags" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="product_id" domain="[('type','=','service')]" readonly="state != 'draft'"/>
+                                <field name="total_lessons" invisible="1"/>
+                                <field name="invoice_created" invisible="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="repeat" required="1"/>
+                        </group>
+
+                        <group invisible="repeat != 'weekly'" readonly="state != 'draft'">
+                            <group>
+                                <field name="monday_0"/>
+                                <field name="tuesday_1"/>
+                                <field name="wednesday_2"/>
+                                <field name="thursday_3"/>
+                            </group>
+                            <group>
+                                <field name="friday_4"/>
+                                <field name="saturday_5"/>
+                                <field name="sunday_6"/>
+                            </group>
+                        </group>
+
+                        <group invisible="repeat != 'monthly'" readonly="state != 'draft'">
+                            <group>
+                                <field name="monthly_dates_ids">
+                                    <tree editable="bottom">
+                                        <field name="date" required="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+
+                        <field name="language_lesson_ids" nolabel="1" readonly="1" string="Lessons">
+                            <tree>
+                                <field name="name"/>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="language_class_search_view" model="ir.ui.view">
+            <field name="name">language.class.search.view</field>
+            <field name="model">language.class</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="product_id"/>
+                    <field name="state"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_employee_id" string="Teacher" context="{'group_by':'employee_id'}"/>
+                        <filter name="group_by_product_id" string="Service" context="{'group_by':'product_id'}"/>
+                        <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="language_class_kanban_view" model="ir.ui.view">
+            <field name="name">language.class.kanban.view</field>
+            <field name="model">language.class</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="employee_id"/>
+                    <field name="product_id"/>
+                    <field name="total_lessons"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="row mb4">
+                                    <div class="col-8">
+                                        <b style="color:#317F79;">
+                                            <span>
+                                                <strong>Name: </strong>
+                                                <t t-esc="record.name.value"/>
+                                            </span>
+                                        </b>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <span>
+                                            <b>
+                                                <t t-esc="record.total_lessons.value"/>
+                                            </b>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <span>
+                                            <b>Start Date:</b>
+                                            <t t-esc="record.start_time.value"/>
+                                        </span>
+                                    </div>
+                                    <div class="col-2 text-center">
+                                        <span class="float-right">
+                                            <b>Lessons</b>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_primary">
+                                    <span>
+                                        <b>End Date:</b>
+                                        <t t-esc="record.end_time.value"/>
+                                    </span>
+                                </div>
+                                <div class="o_primary">
+                                    <span>
+                                        <b>Teacher:</b>
+                                        <t t-esc="record.employee_id.value"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="language_class_action" model="ir.actions.act_window">
+            <field name="name">Classes</field>
+            <field name="res_model">language.class</field>
+            <field name="view_mode">kanban,tree,form,search</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Classes not found to display.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_class" name="Classes" sequence="1" action="language_class_action" parent="bi_language_school_management.menu_language_school"/>
+
+    </data>
+</odoo>

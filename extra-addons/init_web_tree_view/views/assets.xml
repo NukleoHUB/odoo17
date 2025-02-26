@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="assets_backend" name="init_web_tree_view assets" inherit_id="web.assets_backend">
+        <xpath expr="//script[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/init_web_tree_view/static/src/scss/tree_view.scss"/>
+            <script type="text/javascript" src="/init_web_tree_view/static/src/js/tree_controller.js"></script>
+            <script type="text/javascript" src="/init_web_tree_view/static/src/js/tree_renderer.js"></script>
+            <script type="text/javascript" src="/init_web_tree_view/static/src/js/tree_model.js"></script>
+            <script type="text/javascript" src="/init_web_tree_view/static/src/js/tree_view.js"></script>
+        </xpath>
+    </template>
+</odoo>

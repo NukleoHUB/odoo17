@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="action_user_profiles_form" model="ir.actions.act_window">
+            <field name="name">User Profiles</field>
+            <field name="res_model">user.profiles</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_user_profiles_tree" model="ir.actions.act_window">
+            <field name="name">User Profiles</field>
+            <field name="res_model">user.profiles</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_user_management" model="ir.actions.act_window">
+            <field name="name">User Management</field>
+            <field name="res_model">user.management</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_user" name="Profile User Manager" sequence="1" web_icon="access_users_manager,static/description/icon.png"/>
+
+        <menuitem id="menu_user_profiles_form" name="Profiles Form" parent="menu_user" action="action_user_profiles_form" sequence="10"/>
+
+        <menuitem id="menu_user_profiles_tree" name="Profiles Tree" parent="menu_user" action="action_user_profiles_tree" sequence="20"/>
+
+        <menuitem id="menu_user_management" name="User Management" parent="menu_user" action="action_user_management" sequence="30"/>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="report_language_class" model="language.class.report" string="Language Class Report" report_type="qweb-pdf" name="bi_language_school_management.language_class_report" file="bi_language_school_management.language_class_report"/>
+    <template id="language_class_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="oe_structure" />
+                <div class="text-center">
+                    <h1>
+                        Attendance Report
+                    </h1>
+                    <br/>
+                </div>
+
+                <table border="2" class="table-bordered">
+                    <tr>
+                        <th style="width:200px">
+                            <label style="font-weight:bold">Lesson Name</label>
+                        </th>
+                        <th style="width:200px">
+                            <label style="font-weight:bold">Start Date</label>
+                        </th>
+                        <th style="width:200px">
+                            <label style="font-weight:bold">End Date</label>
+                        </th>
+                        <th style="width:200px">
+                            <label style="font-weight:bold">Student Name</label>
+                        </th>
+                        <th style="width:200px">
+                            <label style="font-weight:bold">Teacher Name</label>
+                        </th>
+                        <th style="width:200px" t-if="docs.is_attendance">
+                            <label style="font-weight:bold">Attendance</label>
+                        </th>
+                    </tr>
+
+                    <t t-foreach="docs.attendance_list_ids" t-as="attendance">
+                        <tr>
+                            <td>
+                                <t t-esc="attendance.lesson_name"/>
+                            </td>
+                            <td>
+                                <t t-esc="attendance.start_time"/>
+                            </td>
+                            <td>
+                                <t t-esc="attendance.end_time"/>
+                            </td>
+                            <td>
+                                <t t-esc="attendance.student_name"/>
+                            </td>
+                            <td>
+                                <t t-esc="attendance.teacher_name"/>
+                            </td>
+                            <td t-if="docs.is_attendance">
+                                <t t-esc="attendance.attendance"/>
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+            </t>
+        </t>
+    </template>
+</odoo>
