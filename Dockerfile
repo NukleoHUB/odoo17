@@ -31,7 +31,7 @@ WORKDIR /usr/lib/python3/dist-packages/odoo
 # Copiar addons adicionais e temas de design
 COPY ./extra-addons /usr/lib/python3/dist-packages/odoo/extra-addons
 COPY ./enterprise /usr/lib/python3/dist-packages/odoo/enterprise
-COPY ./design-themes /usr/lib/python3/dist-packages/odoo/design-themes
+
 
 # Copiar o arquivo de configuração do Odoo
 COPY ./odoo.conf /etc/odoo/
