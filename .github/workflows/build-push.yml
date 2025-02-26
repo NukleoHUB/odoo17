@@ -19,6 +19,6 @@ jobs:
 
       - name: Build new Odoo Image V17 Enterprise && Push to Registry
         run: |
-          docker buildx build --platform linux/amd64 -t aosdevs/odoocast:odoo.debian.17.0.0.0.0 .
-          docker push aosdevs/odoocast:odoo.debian.17.0.0.0.0
+          docker buildx build --platform linux/amd64 -t nukleoforce/odoo:17.0.0.0.0 .
+          docker push nukleoforce/odoo:17.0.0.0.0
 
